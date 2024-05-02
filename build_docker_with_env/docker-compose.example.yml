@@ -1,0 +1,14 @@
+version: '3'
+services:
+  build_app:
+    build:
+      context: .
+      dockerfile: DockerFile.example
+    #This is the command that should be executed during runtime 
+    command: sh -c "python manage.py migrate --noinput && gunicorn my_django_app.wsgi:application --workers 2 --bind 0.0.0.0:8000"
+    volumes:
+    #Reading the .env file from host machine 
+    #to the container 
+      - ./env/.env.example:/app/env/.env.example
+    ports:
+      - "8000:8000"
